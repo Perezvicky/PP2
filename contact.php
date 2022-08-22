@@ -3,6 +3,8 @@
 
 <head>
 	<title>Contacto</title>
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
