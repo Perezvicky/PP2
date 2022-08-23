@@ -153,39 +153,3 @@ body{
         text-decoration:none; 
         color:#1D5DEC;
 }
-
-/*  backgorund-index   ============================================================================= */
-
-
-.backgorund-index {
-	position: relative;
-	list-style: none;
-	overflow: hidden;
-	padding: 0;
-	margin: 0;
-	width: 100%;
-	height: 100%;
-	}
-  
-  .backgorund-index li {
-	-webkit-backface-visibility: hidden;
-	position: absolute;
-	display: none;
-	width: 100%;
-	left: 0;
-	top: 0;
-	}
-  
-  .backgorund-index li:first-child {
-	position: relative;
-	display: block;
-	float: left;
-	}
-  
-  .backgorund-index img {
-	   display: block;
-	  height: auto;
-	  float: left;
-	  border: 0;
-	  width: 100%;
-	}
