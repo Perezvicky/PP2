@@ -2,7 +2,7 @@
 session_start();
 error_reporting(0);
 include("include/config.php");
-error_reporting(0);
+
 if(isset($_POST['submit']))
 {
 $ret=mysqli_query($con,"SELECT * FROM doctors WHERE docEmail='".$_POST['username']."' and password='".md5($_POST['password'])."'");
