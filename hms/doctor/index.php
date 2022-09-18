@@ -1,6 +1,6 @@
 <?php
-session_start();
-include("include/config.php");
+/*session_start();
+
 error_reporting(0);
 if(isset($_POST['submit']))
 {
@@ -32,7 +32,48 @@ $uri  = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
 header("location:http://$host$uri/$extra");
 exit();
 }
-}
+}*/
+include ('include/doctor-functions.php');
+$con = new DB();
+$conexion = $con->conectar();
+session_start();
+$_SESSION['errmsg']="";
+if(isset($_POST['submit'])){
+	$username = $_POST['username'];
+	$password = md5($_POST['password']);
+	$uip=$_SERVER['REMOTE_ADDR'];
+	$status = 0;
+	//$uri=rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
+	$doctor = new doctor();
+	$num = $doctor->comprobar($username, $password);
+	if($num>0) {
+		$_SESSION['login'] = $username;
+		$_SESSION['id'] = $num['id'];
+		//$uip=$_SERVER['REMOTE_ADDR'];
+		$status=1;
+		$extra="dashboard.php";
+		$log = $doctor->doctorlog($uip, $status);
+		//$host=$_SERVER['HTTP_HOST'];
+		//$uri=rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
+		//header("location:http://$host$uri/$extra");
+		header($doctor->redirect($extra));
+	exit();
+			}
+		else 	{
+			
+			$_SESSION['login']=$_POST['username'];
+			//$uip=$_SERVER['REMOTE_ADDR'];
+			$status=0;
+			$extra="index.php";
+			$log = $doctor->doctorlog($uip, $status);
+			$_SESSION['errmsg']="Usuario o contraseña invalido"; //arreglar, no muestra el mensaje
+			//$extra="index.php";
+			//$uri  = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
+			//header("location:http://$host$uri/$extra");
+			header($doctor->redirect($extra));
+		exit();
+				}
+	}
 ?>
 
 
@@ -67,7 +108,8 @@ exit();
 							</legend>
 							<p>
 								Por favor ingrese su nombre y contraseña para iniciar sesión.<br />
-								<span style="color:red;"><?php echo $_SESSION['errmsg']; ?><?php echo $_SESSION['errmsg']="";?></span>
+								<span style="color:red;"><?php echo $_SESSION['errmsg']; 
+								$_SESSION['errmsg']="";?></span>
 							</p>
 							<div class="form-group">
 								<span class="input-icon">

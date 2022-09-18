@@ -1,3 +1,5 @@
+<?php
+?>
 <footer>
 				<div class="footer-inner">
 					<div class="pull-left">

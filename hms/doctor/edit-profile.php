@@ -1,8 +1,8 @@
 <?php
 session_start();
 error_reporting(0);
-include('include/config.php');
-include('include/checklogin.php');
+//
+//include('include/checklogin.php');
 if(isset($_POST['submit']))
 {
 	$docspecialization=$_POST['Doctorspecialization'];
@@ -11,13 +11,25 @@ $docaddress=$_POST['clinicaddress'];
 $docfees=$_POST['docfees'];
 $doccontactno=$_POST['doccontact'];
 $docemail=$_POST['docemail'];
-$sql=mysqli_query($con,"Update doctors set specilization='$docspecialization',doctorName='$docname',address='$docaddress',docFees='$docfees',contactno='$doccontactno' where id='".$_SESSION['id']."'");
-if($sql)
+//$sql=mysqli_query($con,"Update doctors set specilization='$docspecialization',doctorName='$docname',address='$docaddress',docFees='$docfees',contactno='$doccontactno' where id='".$_SESSION['id']."'");
+/*if($sql)
 {
 echo "<script>alert('Doctor Details updated Successfully');</script>";
 
+}*/
+include('include/doctor-functions.php');
+$doctor = new doctor();
+$sql = $doctor->updateDoctor($docspecialization, $docname, $docaddress, $docfees, $doccontactno, $docemail);
+$extra = "edit-profile.php";
+header($doctor->redirect($extra));
+if ($sql){
+	                $_SESSION['errmsg']="Datos actualizados";
+                    
 }
+
+
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,19 +86,35 @@ echo "<script>alert('Doctor Details updated Successfully');</script>";
 										<div class="col-lg-8 col-md-12">
 											<div class="panel panel-white">
 												<div class="panel-heading">
-													<h5 class="panel-title">Editar doctor</h5>
+													<h5 class="panel-title">Editar doctor</h5>											
 												</div>
 												<div class="panel-body">
-									<?php $sql=mysqli_query($con,"select * from doctors where docEmail='".$_SESSION['dlogin']."'");
-while($data=mysqli_fetch_array($sql))
-{
-?>
-<h4><?php echo htmlentities($data['doctorName']);?> Perfil</h4>
-<p><b>Registro de perfil Fecha: </b><?php echo htmlentities($data['creationDate']);?></p>
-<?php if($data['updationDate']){?>
-<p><b>Perfil Última Fecha de actualización: </b><?php echo htmlentities($data['updationDate']);?></p>
-<?php } ?>
-<hr />
+													
+									<?php
+									//$sql=mysqli_query($conexion,"select * from doctors where docEmail='".$_SESSION['login']."'");
+									$doctor = new doctor();
+									$sql = $doctor->getAll();
+									while($data=mysqli_fetch_array($sql))
+									{
+										?>
+										<h4>
+											<?php 
+											echo htmlentities($data['doctorName']);
+											?> Perfil
+										</h4>
+										<p><b>Registro de perfil Fecha: </b><?php echo htmlentities($data['creationDate']);?></p>
+										<?php 
+										if($data['updationDate']){
+										?>
+										<p>
+											<b>Perfil Última Fecha de actualización: 
+											</b>
+											<?php echo htmlentities($data['updationDate']);
+											?>
+										</p>
+										<?php } 
+										?>
+										<hr/>
 													<form role="form" name="adddoc" method="post" onSubmit="return valid();">
 														<div class="form-group">
 															<label for="DoctorSpecialization">
@@ -95,10 +123,14 @@ while($data=mysqli_fetch_array($sql))
 							<select name="Doctorspecialization" class="form-control" required="required">
 					<option value="<?php echo htmlentities($data['specilization']);?>">
 					<?php echo htmlentities($data['specilization']);?></option>
-<?php $ret=mysqli_query($con,"select * from doctorspecilization");
-while($row=mysqli_fetch_array($ret))
-{
-?>
+					
+					<?php 
+					$doctor = new doctor();
+					$ret = $doctor->getDoctorspecilization();
+					//$ret=mysqli_query($conexion,"select * from doctorspecilization");
+					while($row=mysqli_fetch_array($ret))
+					{
+						?>
 																<option value="<?php echo htmlentities($row['specilization']);?>">
 																	<?php echo htmlentities($row['specilization']);?>
 																</option>
@@ -151,6 +183,10 @@ while($row=mysqli_fetch_array($ret))
 														<button type="submit" name="submit" class="btn btn-o btn-primary">
 															Actualizar
 														</button>
+														<br>
+														<br>
+														<span style="color: green; font-weight: bold; font-size: 13px;"><?php echo $_SESSION['errmsg']; 
+														$_SESSION['errmsg']="";?></span>
 													</form>
 												</div>
 											</div>

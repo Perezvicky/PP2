@@ -1,27 +1,33 @@
 <?php
 session_start();
 error_reporting(0);
-include('include/config.php');
-include('include/checklogin.php');
-check_login();
+//include('include/config.php');
+//include('include/checklogin.php');
+//check_login();
 
 if(isset($_POST['submit']))
 {	
-	$docid=$_SESSION['id'];
-	$patname=$_POST['patname'];
+$docid=$_SESSION['id'];
+$patname=$_POST['patname'];
 $patcontact=$_POST['patcontact'];
 $patemail=$_POST['patemail'];
 $gender=$_POST['gender'];
 $pataddress=$_POST['pataddress'];
 $patage=$_POST['patage'];
 $medhis=$_POST['medhis'];
-$sql=mysqli_query($con,"insert into tblpatient(Docid,PatientName,PatientContno,PatientEmail,PatientGender,PatientAdd,PatientAge,PatientMedhis) values('$docid','$patname','$patcontact','$patemail','$gender','$pataddress','$patage','$medhis')");
+/*$sql=mysqli_query($con,"insert into tblpatient(Docid,PatientName,PatientContno,PatientEmail,PatientGender,PatientAdd,PatientAge,PatientMedhis) values('$docid','$patname','$patcontact','$patemail','$gender','$pataddress','$patage','$medhis')");
 if($sql)
 {
 echo "<script>alert('Patient info added Successfully');</script>";
 header('location:add-patient.php');
 
 }
+}*/
+include('include/doctor-functions.php');
+$doctor = new doctor();
+$doctor->addPatient($docid, $patname, $patcontact, $patemail, $gender, $pataddress, $patage, $medhis);
+$extra = "add-patient.php";
+header($doctor->redirect($extra));
 }
 ?>
 <!DOCTYPE html>
@@ -44,7 +50,7 @@ header('location:add-patient.php');
 		<link rel="stylesheet" href="assets/css/plugins.css">
 		<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
 
-	<script>
+	<script> /* FUNCION JS QUE LLAMA A UN ARCHIVO PHP, ESTO FUNCIONA DE MANERA QUE INDICA EN EL MOMENTO SI EL MAIL ESTA DISPONIBLE O NO. */
 function userAvailability() {
 $("#loaderIcon").show();
 jQuery.ajax({
@@ -152,6 +158,9 @@ Dirección del paciente
 <button type="submit" name="submit" id="submit" class="btn btn-o btn-primary">
 Agregar
 </button>
+<br>
+<br>
+
 </form>
 </div>
 </div>
