@@ -1,6 +1,4 @@
-<?php error_reporting(0);
-?>
-
+<?php error_reporting(0); ?>
 <header class="navbar navbar-default navbar-static-top">
 	<!-- start: NAVBAR HEADER -->
 	<div class="navbar-header">
@@ -31,20 +29,11 @@
 
 
 
-						 <?php
-						
-
-					/*
-						$query = mysqli_query($conexion, "select doctorName from doctors where id='" . $_SESSION['id'] . "'");
+						<?php $query = mysqli_query($con, "select doctorName from doctors where id='" . $_SESSION['id'] . "'");
 						while ($row = mysqli_fetch_array($query)) {
 							echo $row['doctorName'];
-						}*/
-						include('doctor-functions.php');
-						$doctor = new doctor();
-						$nombre = $doctor->getNombre();
-						echo $nombre;
-						?>
-						<i class="ti-angle-down"></i></i></span>
+						}
+						?> <i class="ti-angle-down"></i></i></span>
 				</a>
 				<ul class="dropdown-menu dropdown-dark">
 					<li>

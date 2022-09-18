@@ -1,17 +1,13 @@
 <?php
-    require ("bdconfig.php");
-class DB {
-    protected $con;
-    public static function conectar(){
-        // Check connection
-        
-        $con = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME, DB_PORT)
-        or die ("Error al conectar con la base de datos");
-        
-        if ($con) {
-            return $con;
-        }
-        
-    }
+define('DB_SERVER','localhost');
+define('DB_USER','root');
+define('DB_PASS' ,'');
+define('DB_NAME', 'hms');
+define('DB_PORT', '3307');
+$con = mysqli_connect(DB_SERVER,DB_USER,DB_PASS,DB_NAME,DB_PORT);
+// Check connection
+if (mysqli_connect_errno())
+{
+ echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
 ?>
