@@ -25,12 +25,24 @@ echo "<script>window.location.href ='user-login.php'</script>";
 	<head>
 		<title>Restablecimiento de contraseña</title>
 		<link rel="icon" href="images/favicon.png">
+
+		<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="vendor/themify-icons/themify-icons.min.css">
+		<link href="vendor/animate.css/animate.min.css" rel="stylesheet" media="screen">
+		<link href="vendor/perfect-scrollbar/perfect-scrollbar.min.css" rel="stylesheet" media="screen">
+		<link href="vendor/switchery/switchery.min.css" rel="stylesheet" media="screen">
+		<link rel="stylesheet" href="assets/css/styles.css">
+		<link rel="stylesheet" href="assets/css/plugins.css">
+		<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
+
 				<script type="text/javascript">
 function valid()
 {
  if(document.passwordreset.password.value!= document.passwordreset.password_again.value)
 {
-alert("Password and Confirmar contraseña Field do not match  !!");
+alert("El campo Contraseña y Confirmar contraseña no coinciden!");
 document.passwordreset.password_again.focus();
 return false;
 }
@@ -93,6 +105,17 @@ return true;
 
 			</div>
 		</div>
+		<script src="vendor/jquery/jquery.min.js"></script>
+		<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+		<script src="vendor/modernizr/modernizr.js"></script>
+		<script src="vendor/jquery-cookie/jquery.cookie.js"></script>
+		<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+		<script src="vendor/switchery/switchery.min.js"></script>
+		<script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+	
+		<script src="assets/js/main.js"></script>
+
+		<script src="assets/js/login.js"></script>
 		<script>
 			jQuery(document).ready(function() {
 				Main.init();
