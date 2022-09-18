@@ -1,8 +1,10 @@
 <?php
 session_start();
 error_reporting(0);
-//include('include/checklogin.php');
-//check_login();
+include('include/config.php');
+include('include/checklogin.php');
+check_login();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,10 +33,7 @@ error_reporting(0);
 <?php include('include/sidebar.php');?>
 			<div class="app-content">
 				
-						<?php
-						session_start();
-						include('include/header.php');
-						?>
+						<?php include('include/header.php');?>
 						
 				<!-- end: TOP NAVBAR -->
 				<div class="main-content" >
