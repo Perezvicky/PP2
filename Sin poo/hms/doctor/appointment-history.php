@@ -4,12 +4,16 @@ error_reporting(0);
 include('include/config.php');
 include('include/checklogin.php');
 check_login();
-
+if(isset($_GET['cancel']))
+		  {
+mysqli_query($con,"update appointment set doctorStatus='0' where id ='".$_GET['id']."'");
+                  $_SESSION['msg']="Cita cancelada!!";
+		  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Doctor  | Panel</title>
+		<title>Doctor | Historial de citas</title>
 		
 		<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
@@ -25,16 +29,14 @@ check_login();
 		<link rel="stylesheet" href="assets/css/styles.css">
 		<link rel="stylesheet" href="assets/css/plugins.css">
 		<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
-
-
 	</head>
 	<body>
 		<div id="app">		
 <?php include('include/sidebar.php');?>
 			<div class="app-content">
 				
-						<?php include('include/header.php');?>
-						
+
+					<?php include('include/header.php');?>
 				<!-- end: TOP NAVBAR -->
 				<div class="main-content" >
 					<div class="wrap-content container" id="container">
@@ -42,59 +44,104 @@ check_login();
 						<section id="page-title">
 							<div class="row">
 								<div class="col-sm-8">
-									<h1 class="mainTitle">Doctor | Panel</h1>
+									<h1 class="mainTitle">Doctor  | Historial de citas</h1>
 																	</div>
 								<ol class="breadcrumb">
 									<li>
-										<span>Usuario</span>
+										<span>Doctor </span>
 									</li>
 									<li class="active">
-										<span>Panel</span>
+										<span>Historial de citas</span>
 									</li>
 								</ol>
 							</div>
 						</section>
 						<!-- end: PAGE TITLE -->
 						<!-- start: BASIC EXAMPLE -->
-							<div class="container-fluid container-fullw bg-white">
-							<div class="row">
-								<div class="col-sm-4">
-									<div class="panel panel-white no-radius text-center">
-										<div class="panel-body">
-											<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-smile-o fa-stack-1x fa-inverse"></i> </span>
-											<h2 class="StepTitle">Mi perfil</h2>
+						<div class="container-fluid container-fullw bg-white">
+						
+
+									<div class="row">
+								<div class="col-md-12">
+									
+									<p style="color:red;"><?php echo htmlentities($_SESSION['msg']);?>
+								<?php echo htmlentities($_SESSION['msg']="");?></p>	
+									<table class="table table-hover" id="sample-table-1">
+										<thead>
+											<tr>
+												<th class="center">#</th>
+												<th class="hidden-xs">Nombre del paciente</th>
+												<th>Especialización</th>
+												<th>Cuota de consultoría</th>
+												<th>Cita Fecha / Hora </th>
+												<th>Cita Fecha de creación  </th>
+												<th>Estado actual</th>
+												<th>Editar</th>
+												
+											</tr>
+										</thead>
+										<tbody>
+<?php
+$sql=mysqli_query($con,"select users.fullName as fname,appointment.*  from appointment join users on users.id=appointment.userId where appointment.doctorId='".$_SESSION['id']."'");
+$cnt=1;
+while($row=mysqli_fetch_array($sql))
+{
+?>
+
+											<tr>
+												<td class="center"><?php echo $cnt;?>.</td>
+												<td class="hidden-xs"><?php echo $row['fname'];?></td>
+												<td><?php echo $row['doctorSpecialization'];?></td>
+												<td><?php echo $row['consultancyFees'];?></td>
+												<td><?php echo $row['appointmentDate'];?> / <?php echo
+												 $row['appointmentTime'];?>
+												</td>
+												<td><?php echo $row['postingDate'];?></td>
+												<td>
+<?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
+{
+	echo "Activo";
+}
+if(($row['userStatus']==0) && ($row['doctorStatus']==1))  
+{
+	echo "Cancelado por paciente";
+}
+
+if(($row['userStatus']==1) && ($row['doctorStatus']==0))  
+{
+	echo "Cancelado por ti";
+}
+
+
+
+												?></td>
+												<td >
+												<div class="visible-md visible-lg hidden-sm hidden-xs">
+							<?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
+{ ?>
+
+													
+	<a href="appointment-history.php?id=<?php echo $row['id']?>&cancel=update" onClick="return confirm('Are you sure you want to cancel this appointment ?')"class="btn btn-transparent btn-xs tooltips" title="Cancel Appointment" tooltip-placement="top" tooltip="Remove">Cancel</a>
+	<?php } else {
+
+		echo "Cancelado";
+		} ?>
+												</div>
+												</td>
+											</tr>
 											
-											<p class="links cl-effect-1">
-												<a href="edit-profile.php">
-													Actualización del perfil
-												</a>
-											</p>
-										</div>
-									</div>
+											<?php 
+$cnt=$cnt+1;
+											 }?>
+											
+											
+										</tbody>
+									</table>
 								</div>
-								<div class="col-sm-4">
-									<div class="panel panel-white no-radius text-center">
-										<div class="panel-body">
-											<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-paperclip fa-stack-1x fa-inverse"></i> </span>
-											<h2 class="StepTitle">Mi Equipo</h2>
-										
-											<p class="cl-effect-1">
-												<a href="appointment-history.php">
-													Ver Historial de citas
-												</a>
-											</p>
-										</div>
-									</div>
-								</div>
-								
 							</div>
-						</div>
-			
-					
-					
+								</div>
 						
-						
-					
+						<!-- end: BASIC EXAMPLE -->
 						<!-- end: SELECT BOXES -->
 						
 					</div>

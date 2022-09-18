@@ -9,7 +9,7 @@ check_login();
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Doctor  | Panel</title>
+		<title>Doctor | Administrar pacientes</title>
 		
 		<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
@@ -25,81 +25,81 @@ check_login();
 		<link rel="stylesheet" href="assets/css/styles.css">
 		<link rel="stylesheet" href="assets/css/plugins.css">
 		<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
-
-
 	</head>
 	<body>
 		<div id="app">		
 <?php include('include/sidebar.php');?>
-			<div class="app-content">
-				
-						<?php include('include/header.php');?>
-						
-				<!-- end: TOP NAVBAR -->
-				<div class="main-content" >
-					<div class="wrap-content container" id="container">
+<div class="app-content">
+<?php include('include/header.php');?>
+<div class="main-content" >
+<div class="wrap-content container" id="container">
 						<!-- start: PAGE TITLE -->
-						<section id="page-title">
-							<div class="row">
-								<div class="col-sm-8">
-									<h1 class="mainTitle">Doctor | Panel</h1>
-																	</div>
-								<ol class="breadcrumb">
-									<li>
-										<span>Usuario</span>
-									</li>
-									<li class="active">
-										<span>Panel</span>
-									</li>
-								</ol>
-							</div>
-						</section>
-						<!-- end: PAGE TITLE -->
-						<!-- start: BASIC EXAMPLE -->
-							<div class="container-fluid container-fullw bg-white">
-							<div class="row">
-								<div class="col-sm-4">
-									<div class="panel panel-white no-radius text-center">
-										<div class="panel-body">
-											<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-smile-o fa-stack-1x fa-inverse"></i> </span>
-											<h2 class="StepTitle">Mi perfil</h2>
-											
-											<p class="links cl-effect-1">
-												<a href="edit-profile.php">
-													Actualización del perfil
-												</a>
-											</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="panel panel-white no-radius text-center">
-										<div class="panel-body">
-											<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-paperclip fa-stack-1x fa-inverse"></i> </span>
-											<h2 class="StepTitle">Mi Equipo</h2>
-										
-											<p class="cl-effect-1">
-												<a href="appointment-history.php">
-													Ver Historial de citas
-												</a>
-											</p>
-										</div>
-									</div>
-								</div>
-								
-							</div>
-						</div>
-			
-					
-					
-						
-						
-					
-						<!-- end: SELECT BOXES -->
-						
-					</div>
-				</div>
-			</div>
+<section id="page-title">
+<div class="row">
+<div class="col-sm-8">
+<h1 class="mainTitle">Doctor | Administrar pacientes</h1>
+</div>
+<ol class="breadcrumb">
+<li>
+<span>Doctor</span>
+</li>
+<li class="active">
+<span>Administrar pacientes</span>
+</li>
+</ol>
+</div>
+</section>
+<div class="container-fluid container-fullw bg-white">
+<div class="row">
+<div class="col-md-12">
+<h5 class="over-title margin-bottom-15">Gestionar<span class="text-bold"> paciente</span></h5>
+	
+<table class="table table-hover" id="sample-table-1">
+<thead>
+<tr>
+<th class="center">#</th>
+<th>Nombre del paciente</th>
+<th>Número de contacto del paciente</th>
+<th>Genero del paciente </th>
+<th>Fecha de creación </th>
+<th>Fecha de actualización </th>
+<th>Editar</th>
+</tr>
+</thead>
+<tbody>
+<?php
+$docid=$_SESSION['id'];
+$sql=mysqli_query($con,"select * from tblpatient where Docid='$docid' ");
+$cnt=1;
+while($row=mysqli_fetch_array($sql))
+{
+?>
+<tr>
+<td class="center"><?php echo $cnt;?>.</td>
+<td class="hidden-xs"><?php echo $row['PatientName'];?></td>
+<td><?php echo $row['PatientContno'];?></td>
+<td><?php echo $row['PatientGender'];?></td>
+<td><?php echo $row['CreationDate'];?></td>
+<td><?php echo $row['UpdationDate'];?>
+</td>
+<td>
+
+<a href="edit-patient.php?editid=<?php echo $row['ID'];?>"><i class="fa fa-edit"></i></a> || <a href="view-patient.php?viewid=<?php echo $row['ID'];?>"><i class="fa fa-eye"></i></a>
+
+</td>
+</tr>
+<?php 
+$cnt=$cnt+1;
+ }?></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 			<!-- start: FOOTER -->
 	<?php include('include/footer.php');?>
 			<!-- end: FOOTER -->
