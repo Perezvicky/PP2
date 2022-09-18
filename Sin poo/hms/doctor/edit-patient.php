@@ -5,11 +5,29 @@ include('include/config.php');
 include('include/checklogin.php');
 check_login();
 
+if(isset($_POST['submit']))
+{	
+	$eid=$_GET['editid'];
+	$patname=$_POST['patname'];
+$patcontact=$_POST['patcontact'];
+$patemail=$_POST['patemail'];
+$gender=$_POST['gender'];
+$pataddress=$_POST['pataddress'];
+$patage=$_POST['patage'];
+$medhis=$_POST['medhis'];
+$sql=mysqli_query($con,"update tblpatient set PatientName='$patname',PatientContno='$patcontact',PatientEmail='$patemail',PatientGender='$gender',PatientAdd='$pataddress',PatientAge='$patage',PatientMedhis='$medhis' where ID='$eid'");
+if($sql)
+{
+echo "<script>alert('Patient info updated Successfully');</script>";
+header('location:manage-patient.php');
+
+}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Doctor | Administrar pacientes</title>
+		<title>Doctor | Añadir paciente</title>
 		
 		<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
@@ -25,26 +43,29 @@ check_login();
 		<link rel="stylesheet" href="assets/css/styles.css">
 		<link rel="stylesheet" href="assets/css/plugins.css">
 		<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
+
+
 	</head>
 	<body>
 		<div id="app">		
 <?php include('include/sidebar.php');?>
 <div class="app-content">
 <?php include('include/header.php');?>
+						
 <div class="main-content" >
 <div class="wrap-content container" id="container">
 						<!-- start: PAGE TITLE -->
 <section id="page-title">
 <div class="row">
 <div class="col-sm-8">
-<h1 class="mainTitle">Doctor | Administrar pacientes</h1>
+<h1 class="mainTitle">Paciente | Añadir paciente</h1>
 </div>
 <ol class="breadcrumb">
 <li>
-<span>Doctor</span>
+<span>Paciente</span>
 </li>
 <li class="active">
-<span>Administrar pacientes</span>
+<span>Añadir paciente</span>
 </li>
 </ol>
 </div>
@@ -52,60 +73,103 @@ check_login();
 <div class="container-fluid container-fullw bg-white">
 <div class="row">
 <div class="col-md-12">
-<h5 class="over-title margin-bottom-15">Gestionar<span class="text-bold"> paciente</span></h5>
-	
-<table class="table table-hover" id="sample-table-1">
-<thead>
-<tr>
-<th class="center">#</th>
-<th>Nombre del paciente</th>
-<th>Número de contacto del paciente</th>
-<th>Genero del paciente </th>
-<th>Fecha de creación </th>
-<th>Fecha de actualización </th>
-<th>Editar</th>
-</tr>
-</thead>
-<tbody>
+<div class="row margin-top-30">
+<div class="col-lg-8 col-md-12">
+<div class="panel panel-white">
+<div class="panel-heading">
+<h5 class="panel-title">Añadir paciente</h5>
+</div>
+<div class="panel-body">
+<form role="form" name="" method="post">
 <?php
-$docid=$_SESSION['id'];
-$sql=mysqli_query($con,"select * from tblpatient where Docid='$docid' ");
+ $eid=$_GET['editid'];
+$ret=mysqli_query($con,"select * from tblpatient where ID='$eid'");
 $cnt=1;
-while($row=mysqli_fetch_array($sql))
-{
+while ($row=mysqli_fetch_array($ret)) {
+
 ?>
-<tr>
-<td class="center"><?php echo $cnt;?>.</td>
-<td class="hidden-xs"><?php echo $row['PatientName'];?></td>
-<td><?php echo $row['PatientContno'];?></td>
-<td><?php echo $row['PatientGender'];?></td>
-<td><?php echo $row['CreationDate'];?></td>
-<td><?php echo $row['UpdationDate'];?>
-</td>
-<td>
-
-<a href="edit-patient.php?editid=<?php echo $row['ID'];?>"><i class="fa fa-edit"></i></a> || <a href="view-patient.php?viewid=<?php echo $row['ID'];?>"><i class="fa fa-eye"></i></a>
-
-</td>
-</tr>
-<?php 
-$cnt=$cnt+1;
- }?></tbody>
-</table>
+<div class="form-group">
+<label for="doctorname">
+Nombre del paciente
+</label>
+<input type="text" name="patname" class="form-control"  value="<?php  echo $row['PatientName'];?>" required="true">
+</div>
+<div class="form-group">
+<label for="fess">
+ Contacto del paciente
+</label>
+<input type="text" name="patcontact" class="form-control"  value="<?php  echo $row['PatientContno'];?>" required="true" maxlength="10" pattern="[0-9]+">
+</div>
+<div class="form-group">
+<label for="fess">
+Email del paciente
+</label>
+<input type="email" id="patemail" name="patemail" class="form-control"  value="<?php  echo $row['PatientEmail'];?>" readonly='true'>
+<span id="email-availability-status"></span>
+</div>
+<div class="form-group">
+              <label class="control-label">Genero: </label>
+              <?php  if($row['Gender']=="Female"){ ?>
+              <input type="radio" name="gender" id="gender" value="Female" checked="true">Femenino
+              <input type="radio" name="gender" id="gender" value="male">Masculino
+              <?php } else { ?>
+              <label>
+              <input type="radio" name="gender" id="gender" value="Male" checked="true">Masculino
+              <input type="radio" name="gender" id="gender" value="Female">Femenino
+              </label>
+             <?php } ?>
+            </div>
+<div class="form-group">
+<label for="address">
+Dirección del paciente
+</label>
+<textarea name="pataddress" class="form-control" required="true"><?php  echo $row['PatientAdd'];?></textarea>
+</div>
+<div class="form-group">
+<label for="fess">
+ Edad del paciente
+</label>
+<input type="text" name="patage" class="form-control"  value="<?php  echo $row['PatientAge'];?>" required="true">
+</div>
+<div class="form-group">
+<label for="fess">
+ Historial médico
+</label>
+<textarea type="text" name="medhis" class="form-control"  placeholder="Ingrece historial médico (si lo hay)" required="true"><?php  echo $row['PatientMedhis'];?></textarea>
+</div>	
+<div class="form-group">
+<label for="fess">
+ Fecha de creación
+</label>
+<input type="text" class="form-control"  value="<?php  echo $row['CreationDate'];?>" readonly='true'>
+</div>
+<?php } ?>
+<button type="submit" name="submit" id="submit" class="btn btn-o btn-primary">
+Actualizar
+</button>
+</form>
 </div>
 </div>
 </div>
 </div>
 </div>
+<div class="col-lg-12 col-md-12">
+<div class="panel panel-white">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>				
 </div>
 </div>
 </div>
 			<!-- start: FOOTER -->
-	<?php include('include/footer.php');?>
+<?php include('include/footer.php');?>
 			<!-- end: FOOTER -->
 		
 			<!-- start: SETTINGS -->
-	<?php include('include/setting.php');?>
+<?php include('include/setting.php');?>
 			
 			<!-- end: SETTINGS -->
 		</div>
