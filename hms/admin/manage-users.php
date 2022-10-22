@@ -1,15 +1,13 @@
 <?php
 session_start();
+require('../../clases/DataBase.php');
+require('../../clases/Admin.php');
 error_reporting(0);
-include('include/config.php');
-include('include/checklogin.php');
-check_login();
+$con  = $bd -> abrir_conexion();
+$ad = new Admin();
+$ad->checkloginadmin();
+$ad->BorrarUsuario();
 
-if(isset($_GET['del']))
-		  {
-		          mysqli_query($con,"delete from users where id = '".$_GET['id']."'");
-                  $_SESSION['msg']="datos borrados";
-		  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,19 +70,15 @@ if(isset($_GET['del']))
 										<thead>
 											<tr>
 												<th class="center">#</th>
-												<th>Apellido y Nombre</th>
-												<th class="hidden-xs">Dirección</th>
-												<th>Ciudad</th>
-												<th>Genero </th>
-												<th>Email </th>
-												<th>Fecha de creación </th>
+												<th>Nombre y apellido</th>
+												<th class="hidden-xs">Usuario</th>
 												<th>Fecha de actualización </th>
 												<th>Editar</th>
 											</tr>
 										</thead>
 										<tbody>
 <?php
-$sql=mysqli_query($con,"select * from users");
+$sql= $ad->BuscarAdmin();
 $cnt=1;
 while($row=mysqli_fetch_array($sql))
 {
@@ -92,13 +86,8 @@ while($row=mysqli_fetch_array($sql))
 
 											<tr>
 												<td class="center"><?php echo $cnt;?>.</td>
-												<td class="hidden-xs"><?php echo $row['fullName'];?></td>
-												<td><?php echo $row['address'];?></td>
-												<td><?php echo $row['city'];?>
-												</td>
-												<td><?php echo $row['gender'];?></td>
-												<td><?php echo $row['email'];?></td>
-												<td><?php echo $row['regDate'];?></td>
+												<td class="hidden-xs"><?php echo $row['username'];?></td>
+												<td><?php echo $row['password'];?></td>
 												<td><?php echo $row['updationDate'];?>
 												</td>
 												<td >

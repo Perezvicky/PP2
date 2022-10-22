@@ -9,7 +9,7 @@
 						</div>
 						<ul class="main-navigation-menu">
 							<li>
-								<a href="dashboard.php">
+								<a href="dashboardadmin.php">
 									<div class="item-content">
 										<div class="item-media">
 											<i class="ti-home"></i>

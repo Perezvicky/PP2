@@ -1,10 +1,11 @@
 <?php
 session_start();
+require('../../clases/DataBase.php');
+require('../../clases/Admin.php');
 error_reporting(0);
-include('include/config.php');
-include('include/checklogin.php');
-check_login();
-
+$con = $bd -> abrir_conexion();
+$ad = new Admin();
+$ad->checkloginadmin();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +73,7 @@ check_login();
 									<tbody>
 										<?php
 
-										$sql = mysqli_query($con, "select * from tblpatient");
+										$sql = $ad->BuscarPac();
 										$cnt = 1;
 										while ($row = mysqli_fetch_array($sql)) {
 										?>

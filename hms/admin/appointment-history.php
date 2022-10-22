@@ -1,9 +1,12 @@
 <?php
 session_start();
+require('../../clases/DataBase.php');
+require('../../clases/Admin.php');
 error_reporting(0);
-include('include/config.php');
-include('include/checklogin.php');
-check_login();
+$bd = new Base();
+$con = $bd -> abrir_conexion();
+$ad = new Admin();
+$ad->checkloginadmin();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,22 +16,21 @@ check_login();
 	<link rel="icon" href="images/favicon.png">
 
 	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="vendor/themify-icons/themify-icons.min.css">
-	<link href="vendor/animate.css/animate.min.css" rel="stylesheet" media="screen">
-	<link href="vendor/perfect-scrollbar/perfect-scrollbar.min.css" rel="stylesheet" media="screen">
-	<link href="vendor/switchery/switchery.min.css" rel="stylesheet" media="screen">
-	<link href="vendor/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet" media="screen">
-	<link href="vendor/select2/select2.min.css" rel="stylesheet" media="screen">
-	<link href="vendor/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" media="screen">
-	<link href="vendor/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" media="screen">
-	<link rel="stylesheet" href="assets/css/styles.css">
-	<link rel="stylesheet" href="assets/css/plugins.css">
-	<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
-</head>
-
-<body>
+		<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="vendor/themify-icons/themify-icons.min.css">
+		<link href="vendor/animate.css/animate.min.css" rel="stylesheet" media="screen">
+		<link href="vendor/perfect-scrollbar/perfect-scrollbar.min.css" rel="stylesheet" media="screen">
+		<link href="vendor/switchery/switchery.min.css" rel="stylesheet" media="screen">
+		<link href="vendor/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet" media="screen">
+		<link href="vendor/select2/select2.min.css" rel="stylesheet" media="screen">
+		<link href="vendor/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" media="screen">
+		<link href="vendor/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" media="screen">
+		<link rel="stylesheet" href="assets/css/styles.css">
+		<link rel="stylesheet" href="assets/css/plugins.css">
+		<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
+	</head>
+	<body>
 	<div id="app">
 		<?php include('include/sidebar.php'); ?>
 		<div class="app-content">
@@ -80,11 +82,11 @@ check_login();
 										</tr>
 									</thead>
 									<tbody>
-										<?php
-										$sql = mysqli_query($con, "select doctors.doctorName as docname,users.fullName as pname,appointment.*  from appointment join doctors on doctors.id=appointment.doctorId join users on users.id=appointment.userId ");
-										$cnt = 1;
-										while ($row = mysqli_fetch_array($sql)) {
-										?>
+<?php
+	$sql = $ad->BuscarCitas();
+	$cnt = 1;
+	while ($row = mysqli_fetch_array($sql)) {
+												?>
 
 											<tr>
 												<td class="center"><?php echo $cnt; ?>.</td>

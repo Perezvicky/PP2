@@ -1,5 +1,6 @@
 <?php 
-require_once("include/config.php");
+require('../../clases/DataBase.php');
+$con = $bd -> abrir_conexion();
 if(!empty($_POST["emailid"])) {
 	$email= $_POST["emailid"];
 	

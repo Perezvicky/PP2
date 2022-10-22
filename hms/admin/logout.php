@@ -1,8 +1,7 @@
 <?php
 session_start();
-$_SESSION['login']=="";
-session_unset();
-session_destroy();
+require('../../clases/DataBase.php');
+$bd->cerrar_conexion();
 ?>
 <script language="javascript">
 document.location="../../index.html";

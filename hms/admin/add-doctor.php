@@ -1,24 +1,17 @@
 <?php
 session_start();
+require('../../clases/DataBase.php');
+require('../../clases/Admin.php');
 error_reporting(0);
-include('include/config.php');
-include('include/checklogin.php');
-check_login();
-
-if (isset($_POST['submit'])) {
-	$docspecialization = $_POST['Doctorspecialization'];
-	$docname = $_POST['docname'];
-	$docaddress = $_POST['clinicaddress'];
-	$docfees = $_POST['docfees'];
-	$doccontactno = $_POST['doccontact'];
-	$docemail = $_POST['docemail'];
-	$password = md5($_POST['npass']);
-	$sql = mysqli_query($con, "insert into doctors(specilization,doctorName,address,docFees,contactno,docEmail,password) values('$docspecialization','$docname','$docaddress','$docfees','$doccontactno','$docemail','$password')");
-	if ($sql) {
-		echo "<script>alert('Doctor info added Successfully');</script>";
-		echo "<script>window.location.href ='manage-doctors.php'</script>";
-	}
-}
+$bd = new Base();
+$con = $bd -> abrir_conexion();
+$ad = new Admin();
+$ad->checkloginadmin();
+$sql = $ad->insertaDoc();
+if ($sql) {
+	echo "<script>alert('Doctor info added Successfully');</script>";
+	echo "<script>window.location.href ='manage-doctors.php'</script>";
+			} 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -117,7 +110,9 @@ if (isset($_POST['submit'])) {
 														</label>
 														<select name="Doctorspecialization" class="form-control" required="true">
 															<option value="">Seleccionar Especialización</option>
-															<?php $ret = mysqli_query($con, "select * from doctorspecilization");
+															<?php $ret = $ad->consultadocesp();
+															//Mientras sea verdadera la consulta realizar lo siguiente:
+															//Carga en un array las especialidades y con htmlentities lo convierte a entidad html
 															while ($row = mysqli_fetch_array($ret)) {
 															?>
 																<option value="<?php echo htmlentities($row['specilization']); ?>">
