@@ -1,3 +1,4 @@
+
 <div class="sidebar app-aside" id="sidebar">
 				<div class="sidebar-container perfect-scrollbar">
 
@@ -67,7 +68,7 @@
 											<i class="ti-search"></i>
 										</div>
 										<div class="item-inner">
-											<span class="title"> Search </span>
+											<span class="title"> Buscar </span>
 										</div>
 									</div>
 								</a>

@@ -1,9 +1,8 @@
 <?php
 session_start();
 error_reporting(0);
-include('include/config.php');
-include('include/checklogin.php');
-check_login();
+//include('include/checklogin.php');
+//check_login();
 
 if(isset($_POST['submit']))
 {	
@@ -15,13 +14,18 @@ $gender=$_POST['gender'];
 $pataddress=$_POST['pataddress'];
 $patage=$_POST['patage'];
 $medhis=$_POST['medhis'];
-$sql=mysqli_query($con,"update tblpatient set PatientName='$patname',PatientContno='$patcontact',PatientEmail='$patemail',PatientGender='$gender',PatientAdd='$pataddress',PatientAge='$patage',PatientMedhis='$medhis' where ID='$eid'");
-if($sql)
+
+/*if($sql)
 {
 echo "<script>alert('Patient info updated Successfully');</script>";
 header('location:manage-patient.php');
+}*/
+include('include/doctor-functions.php');
+$doctor = new Doctor();
+$sql = $doctor->editPatient($eid, $patname, $patcontact, $patemail, $gender, $pataddress, $patage, $medhis, $doctor);
+$extra = "manage-patient.php";
+header($doctor->redirect($extra));
 
-}
 }
 ?>
 <!DOCTYPE html>
@@ -82,9 +86,13 @@ header('location:manage-patient.php');
 <div class="panel-body">
 <form role="form" name="" method="post">
 <?php
- $eid=$_GET['editid'];
-$ret=mysqli_query($con,"select * from tblpatient where ID='$eid'");
-$cnt=1;
+
+$eid=$_GET['editid'];
+$doctor = new doctor();
+$ret = $doctor->getPatient($eid);
+
+//$ret=mysqli_query($con,"select * from tblpatient where ID='$eid'");
+
 while ($row=mysqli_fetch_array($ret)) {
 
 ?>

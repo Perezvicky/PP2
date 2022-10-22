@@ -1,25 +1,41 @@
 <?php
 session_start();
 error_reporting(0);
-include('include/config.php');
-include('include/checklogin.php');
-check_login();
-date_default_timezone_set('Asia/Kolkata');// change according timezone
+//include('include/config.php');
+//include('include/checklogin.php');
+//check_login();
+date_default_timezone_set('America/Argentina/Buenos_Aires');// change according timezone
 $currentTime = date( 'd-m-Y h:i:s A', time () );
 if(isset($_POST['submit']))
 {
-$sql=mysqli_query($con,"SELECT password FROM  doctors where password='".md5($_POST['cpass'])."' && id='".$_SESSION['id']."'");
-$num=mysqli_fetch_array($sql);
-if($num>0)
+//$sql=mysqli_query($con,"SELECT password FROM  doctors where password='".md5($_POST['cpass'])."' && id='".$_SESSION['id']."'");
+include ('include/doctor-functions.php');
+$password = $_POST['cpass'];
+$doctor = new doctor();
+$sql = $doctor->getPassword($password);
+$newpassword = $_POST['npass'];
+$doctor->updatePassword($newpassword, $currentTime);
+
+/*if($num>0)
 {
- $con=mysqli_query($con,"update doctors set password='".md5($_POST['npass'])."', updationDate='$currentTime' where id='".$_SESSION['id']."'");
-$_SESSION['msg1']="Password Changed Successfully !!";
+	$newpassword = $_POST['npass'];
+	$doctor = new doctor();
+	$sql = $doctor->updatePassword($newpassword, $currentTime);
+	$extra = "change-password.php";
+    header($doctor->redirect($extra));
+ //$con=mysqli_query($con,"update doctors set password='".md5($_POST['npass'])."', updationDate='$currentTime' where id='".$_SESSION['id']."'");
+$_SESSION['msg1']="Contraseña modificada.";
 }
 else
 {
-$_SESSION['msg1']="Old Password not match !!";
+	$extra = "change-password.php";
+    header($doctor->redirect($extra));
+
+$_SESSION['msg1']="La contraseña antigua no es valida.";
+}*/
 }
-}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,25 +61,25 @@ function valid()
 {
 if(document.chngpwd.cpass.value=="")
 {
-alert("Contraseña actual Filed is Empty !!");
+alert("El campo 'Contraseña actual' esta vacio");
 document.chngpwd.cpass.focus();
 return false;
 }
 else if(document.chngpwd.npass.value=="")
 {
-alert("Nueva contraseña Filed is Empty !!");
+alert("El campo 'Nueva contraseña' esta vacio");
 document.chngpwd.npass.focus();
 return false;
 }
 else if(document.chngpwd.cfpass.value=="")
 {
-alert("Confirmar contraseña Filed is Empty !!");
+alert("El campo 'Confirmar contraseña' esta vacio");
 document.chngpwd.cfpass.focus();
 return false;
 }
 else if(document.chngpwd.npass.value!= document.chngpwd.cfpass.value)
 {
-alert("Password and Confirmar contraseña Field do not match  !!");
+alert("Los campos 'Nueva contraseña' y 'Confirmar contraseña' no coinciden");
 document.chngpwd.cfpass.focus();
 return false;
 }
@@ -111,27 +127,27 @@ return true;
 													<h5 class="panel-title">Cambia la contraseña</h5>
 												</div>
 												<div class="panel-body">
-								<p style="color:red;"><?php echo htmlentities($_SESSION['msg1']);?>
+								<p style="color:green;"><?php echo htmlentities($_SESSION['msg1']);?>
 								<?php echo htmlentities($_SESSION['msg1']="");?></p>	
 													<form role="form" name="chngpwd" method="post" onSubmit="return valid();">
 														<div class="form-group">
 															<label for="exampleInputEmail1">
 																Contraseña actual
 															</label>
-							<input type="password" name="cpass" class="form-control"  placeholder="Contraseña actual">
+							<input type="password" name="cpass" class="form-control"  minlength="6" placeholder="Contraseña actual">
 														</div>
 														<div class="form-group">
 															<label for="exampleInputPassword1">
 																Nueva contraseña
 															</label>
-					<input type="password" name="npass" class="form-control"  placeholder="Nueva contraseña">
+					<input type="password" name="npass" class="form-control"  minlength="6" placeholder="Nueva contraseña">
 														</div>
 														
 <div class="form-group">
 															<label for="exampleInputPassword1">
 																Confirmar contraseña
 															</label>
-									<input type="password" name="cfpass" class="form-control"  placeholder="Confirmar contraseña">
+									<input type="password" name="cfpass" class="form-control"  minlength="6" placeholder="Confirmar contraseña">
 														</div>
 														
 														

@@ -1,13 +1,19 @@
-<?php
+<?php /*  ------ NO TRAE ABSOLUTAMENTE NADA DE LA BD, AUN EN EL LA PAGINA ORIGINAL SIN POO ------  */
 session_start();
 error_reporting(0);
-include('include/config.php');
-include('include/checklogin.php');
-check_login();
+//include('include/checklogin.php');
+//check_login(); NO FUNCIONA SI AGREGO check_login();=
+
 if(isset($_GET['cancel']))
 		  {
-mysqli_query($con,"update appointment set doctorStatus='0' where id ='".$_GET['id']."'");
-                  $_SESSION['msg']="Cita cancelada!!";
+//mysqli_query($conexion,"update appointment set doctorStatus='0' where id ='".$_GET['id']."'");
+$id = $_GET['id'];
+include_once('include/doctor-functions.php');
+$doctor = new doctor();
+$doctor->updateAppointment($id);
+$extra = "appointment-history.php";
+header($doctor->redirect($extra));
+$_SESSION['msg']="Cita cancelada";
 		  }
 ?>
 <!DOCTYPE html>
@@ -82,7 +88,9 @@ mysqli_query($con,"update appointment set doctorStatus='0' where id ='".$_GET['i
 										</thead>
 										<tbody>
 <?php
-$sql=mysqli_query($con,"select users.fullName as fname,appointment.*  from appointment join users on users.id=appointment.userId where appointment.doctorId='".$_SESSION['id']."'");
+//$sql=mysqli_query($con,"select users.fullName as fname,appointment.*  from appointment join users on users.id=appointment.userId where appointment.doctorId='".$_SESSION['id']."'");
+
+$sql = $doctor->getAppointment();
 $cnt=1;
 while($row=mysqli_fetch_array($sql))
 {
@@ -121,7 +129,7 @@ if(($row['userStatus']==1) && ($row['doctorStatus']==0))
 { ?>
 
 													
-	<a href="appointment-history.php?id=<?php echo $row['id']?>&cancel=update" onClick="return confirm('Are you sure you want to cancel this appointment ?')"class="btn btn-transparent btn-xs tooltips" title="Cancel Appointment" tooltip-placement="top" tooltip="Remove">Cancel</a>
+	<a href="appointment-history.php?id=<?php echo $row['id']?>&cancel=update" onClick="return Confirmar('Seguro que quiere cancelar esta cita?')"class="btn btn-transparent btn-xs tooltips" title="Cancel Appointment" tooltip-placement="top" tooltip="Remove">Cancel</a>
 	<?php } else {
 
 		echo "Cancelado";

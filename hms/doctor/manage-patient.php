@@ -1,9 +1,12 @@
 <?php
 session_start();
 error_reporting(0);
-include('include/config.php');
-include('include/checklogin.php');
-check_login();
+
+
+/*include('include/checklogin.php');
+check_login();*/
+
+
 
 ?>
 <!DOCTYPE html>
@@ -68,8 +71,9 @@ check_login();
 </thead>
 <tbody>
 <?php
-$docid=$_SESSION['id'];
-$sql=mysqli_query($con,"select * from tblpatient where Docid='$docid' ");
+
+$doctor = new doctor();
+$sql = $doctor->getAllPatient();
 $cnt=1;
 while($row=mysqli_fetch_array($sql))
 {

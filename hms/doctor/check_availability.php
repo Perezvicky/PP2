@@ -1,19 +1,21 @@
 <?php 
-require_once("include/config.php");
+require_once("include/doctor-functions.php");
+function checkMail(){
+$con = new DB();
+$conexion = $con->conectar();
 if(!empty($_POST["email"])) {
 	$email= $_POST["email"];
-$result =mysqli_query($con,"SELECT PatientEmail FROM tblpatient WHERE PatientEmail='$email'");
+$result =mysqli_query($conexion,"SELECT PatientEmail FROM tblpatient WHERE PatientEmail='$email'");
 $count=mysqli_num_rows($result);
-if($count>0)
-{
-echo "<span style='color:red'> El Email ya existe.</span>";
- echo "<script>$('#submit').prop('disabled',true);</script>";
+if($count>0){
+return "<span style='color:red'> El Email ya existe.</span>";
+return "<script>$('#submit').prop('disabled',true);</script>";
 } else{
 	
-	echo "<span style='color:green'> Correo electrónico disponible para registro.</span>";
- echo "<script>$('#submit').prop('disabled',false);</script>";
+	return "<span style='color:green'> Correo electrónico disponible para registro.</span>";
+	return "<script>$('#submit').prop('disabled',false);</script>";
 }
 }
-
-
+}
+echo checkMail();
 ?>

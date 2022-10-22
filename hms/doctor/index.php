@@ -1,38 +1,13 @@
 <?php
+include ('include/doctor-functions.php');
 session_start();
-include("include/config.php");
-error_reporting(0);
-if(isset($_POST['submit']))
-{
-$ret=mysqli_query($con,"SELECT * FROM doctors WHERE docEmail='".$_POST['username']."' and password='".md5($_POST['password'])."'");
-$num=mysqli_fetch_array($ret);
-if($num>0)
-{
-$extra="dashboard.php";
-$_SESSION['dlogin']=$_POST['username'];
-$_SESSION['id']=$num['id'];
-$uip=$_SERVER['REMOTE_ADDR'];
-$status=1;
-$log=mysqli_query($con,"insert into doctorslog(uid,username,userip,status) values('".$_SESSION['id']."','".$_SESSION['dlogin']."','$uip','$status')");
-$host=$_SERVER['HTTP_HOST'];
-$uri=rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
-header("location:http://$host$uri/$extra");
-exit();
-}
-else
-{
-$host  = $_SERVER['HTTP_HOST'];
-$_SESSION['dlogin']=$_POST['username'];
-$uip=$_SERVER['REMOTE_ADDR'];
-$status=0;
-mysqli_query($con,"insert into doctorslog(username,userip,status) values('".$_SESSION['dlogin']."','$uip','$status')");
-$_SESSION['errmsg']="usuario o contraseña invalido";
-$extra="index.php";
-$uri  = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
-header("location:http://$host$uri/$extra");
-exit();
-}
-}
+$_SESSION['errmsg']="";
+if(isset($_POST['submit'])){
+	$username = $_POST['username'];
+	$password = $_POST['password'];
+	$doctor = new doctor();
+	$doctor->comprobar($username, $password);
+	}
 ?>
 
 
@@ -67,7 +42,8 @@ exit();
 							</legend>
 							<p>
 								Por favor ingrese su nombre y contraseña para iniciar sesión.<br />
-								<span style="color:red;"><?php echo $_SESSION['errmsg']; ?><?php echo $_SESSION['errmsg']="";?></span>
+								<span style="color:red;"><?php echo $_SESSION['errmsg']; 
+								$_SESSION['errmsg']="";?></span>
 							</p>
 							<div class="form-group">
 								<span class="input-icon">

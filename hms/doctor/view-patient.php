@@ -1,9 +1,9 @@
 <?php
 session_start();
 error_reporting(0);
-include('include/config.php');
-include('include/checklogin.php');
-check_login();
+
+//include('include/checklogin.php');
+//check_login();
 if(isset($_POST['submit']))
   {
     
@@ -12,10 +12,10 @@ if(isset($_POST['submit']))
     $bs=$_POST['bs'];
     $weight=$_POST['weight'];
     $temp=$_POST['temp'];
-   $pres=$_POST['pres'];
+    $pres=$_POST['pres'];
    
- 
-      $query.=mysqli_query($con, "insert   tblmedicalhistory(PatientID,BloodPressure,BloodSugar,Peso,Temperature,MedicalPres)value('$vid','$bp','$bs','$weight','$temp','$pres')");
+    
+    /*$query.=mysqli_query($con, "insert   tblmedicalhistory(PatientID,BloodPressure,BloodSugar,Peso,Temperature,MedicalPres)value('$vid','$bp','$bs','$weight','$temp','$pres')");
     if ($query) {
     echo '<script>alert("Medicle history has been added.")</script>';
     echo "<script>window.location.href ='manage-patient.php'</script>";
@@ -23,9 +23,12 @@ if(isset($_POST['submit']))
   else
     {
       echo '<script>alert("Something Went Wrong. Please try again")</script>';
-    }
-
-  
+    }*/
+    include('include/doctor-functions.php');
+    $doctor = new doctor();
+    $doctor->addMedHistory($vid, $bp, $weight, $temp, $pres);
+    $extra = "view-patient.php";
+    header($doctor->redirect($extra)."?viewid=".$vid);
 }
 
 ?>
@@ -77,8 +80,9 @@ if(isset($_POST['submit']))
 <div class="col-md-12">
 <h5 class="over-title margin-bottom-15">Gestionar<span class="text-bold">Pacientes</span></h5>
 <?php
-                               $vid=$_GET['viewid'];
-                               $ret=mysqli_query($con,"select * from tblpatient where ID='$vid'");
+$vid=$_GET['viewid'];
+$ret = $doctor->getPatient($vid);
+//$ret=mysqli_query($con,"select * from tblpatient where ID='$vid'");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
                                ?>
@@ -117,7 +121,9 @@ while ($row=mysqli_fetch_array($ret)) {
 </table>
 <?php  
 
-$ret=mysqli_query($con,"select * from tblmedicalhistory  where PatientID='$vid'");
+//$ret=mysqli_query($con,"select * from tblmedicalhistory  where PatientID='$vid'");
+
+$ret = $doctor->getMedHistory($vid)
 
 
 

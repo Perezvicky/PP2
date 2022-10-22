@@ -1,25 +1,15 @@
 <?php
 session_start();
 error_reporting(0);
-include("include/config.php");
+
 //Checking Details for reset password
 if(isset($_POST['submit'])){
 $contactno=$_POST['contactno'];
 $email=$_POST['email'];
-$query=mysqli_query($con,"select id from  doctors where contactno='$contactno' and docEmail='$email'");
-$row=mysqli_num_rows($query);
-if($row>0){
-
-$_SESSION['cnumber']=$contactno;
-$_SESSION['email']=$email;
-header('location:reset-password.php');
-} else {
-echo "<script>alert('Invalid details. Please try with valid details');</script>";
-echo "<script>window.location.href ='forgot-password.php'</script>";
-
-
-}
-
+//$query=mysqli_query($con,"select id from  doctors where contactno='$contactno' and docEmail='$email'");
+include('include/doctor-functions.php');
+$doctor = new doctor();
+$doctor->forgotPasword($contactno, $email);
 }
 ?>
 
@@ -51,36 +41,36 @@ echo "<script>window.location.href ='forgot-password.php'</script>";
 					<form class="form-login" method="post">
 						<fieldset>
 							<legend>
-								Doctor Password Recovery
+								Recuperacion de contraseña
 							</legend>
 							<p>
-								Por favor escribeyour  Contact number and Email to recover your password.<br />
+								Por favor escriba su numero y email de contacto.<br />
 					
 							</p>
 
 							<div class="form-group form-actions">
 								<span class="input-icon">
-									<input type="text" class="form-control" name="contactno" placeholder="Registred Contact Number">
+									<input type="text" class="form-control" name="contactno" placeholder="Numero de contacto registrado">
 									<i class="fa fa-lock"></i>
 									 </span>
 							</div>
 
 							<div class="form-group">
 								<span class="input-icon">
-									<input type="email" class="form-control" name="email" placeholder="Registred Email">
+									<input type="email" class="form-control" name="email" placeholder="Email registrado">
 									<i class="fa fa-user"></i> </span>
 							</div>
 
 							<div class="form-actions">
 								
 								<button type="submit" class="btn btn-primary pull-right" name="submit">
-									Reset <i class="fa fa-arrow-circle-right"></i>
+									Restablecer <i class="fa fa-arrow-circle-right"></i>
 								</button>
 							</div>
 							<div class="new-account">
-								Already have an account? 
+								Ya posee cuenta? 
 								<a href="index.php">
-									Log-in
+									Inicie sesion
 								</a>
 							</div>
 						</fieldset>

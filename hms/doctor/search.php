@@ -1,10 +1,8 @@
 <?php
 session_start();
 error_reporting(0);
-include('include/config.php');
-include('include/checklogin.php');
-check_login();
-
+//include('include/checklogin.php');
+//check_login();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,9 +66,10 @@ check_login();
 									</button>
 								</form>
 								<?php
-								if (isset($_POST['search'])) {
 
+								if (isset($_POST['search'])) {
 									$sdata = $_POST['searchdata'];
+
 								?>
 									<h4 align="center">Resultado de "<?php echo $sdata; ?>" </h4>
 
@@ -88,8 +87,10 @@ check_login();
 										</thead>
 										<tbody>
 											<?php
-											$sql = mysqli_query($con, "select * from tblpatient where PatientName like '%$sdata%'|| PatientContno like '%$sdata%'");
-											$num = mysqli_num_rows($sql);
+											$doctor = new doctor();
+											list($sql, $num) = $doctor->getPatientbyName($sdata);
+											//$sql = mysqli_query($con, "select * from tblpatient where PatientName like '%$sdata%'|| PatientContno like '%$sdata%'");
+											//$num = mysqli_num_rows($sql);
 											if ($num > 0) {
 												$cnt = 1;
 												while ($row = mysqli_fetch_array($sql)) {
