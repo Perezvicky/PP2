@@ -68,7 +68,7 @@
 											<i class="ti-search"></i>
 										</div>
 										<div class="item-inner">
-											<span class="title"> Buscar </span>
+											<span class="title"> Search </span>
 										</div>
 									</div>
 								</a>

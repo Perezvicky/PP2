@@ -1,5 +1,9 @@
 <?php
-include_once('include/config.php');
+require('../../clases/DataBase.php');
+require('../../clases/Admin.php');
+session_start();
+error_reporting(0);
+$con= $bd -> abrir_conexion();
 if (isset($_POST['submit'])) {
 	$fname = $_POST['full_name'];
 	$address = $_POST['address'];
@@ -7,10 +11,10 @@ if (isset($_POST['submit'])) {
 	$gender = $_POST['gender'];
 	$email = $_POST['email'];
 	$password = md5($_POST['password']);
-	$query = mysql_query("insert into users(fullname,address,city,gender,email,password) values('$fname','$address','$city','$gender','$email','$password')");
-	if ($query) {
-		echo "<script>alert('Registrado exitosamente. Puedes iniciar sesión ahora');</script>";
-	}
+	$query=mysqli_query($con,"insert into users(fullname,address,city,gender,email,password) values('$fname','$address','$city','$gender','$email','$password')");
+		if ($query) {
+			echo "<script>alert('Registrado exitosamente. Puedes iniciar sesión ahora');</script>";
+		}
 }
 ?>
 

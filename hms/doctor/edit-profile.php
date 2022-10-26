@@ -19,9 +19,14 @@ echo "<script>alert('Doctor Details updated Successfully');</script>";
 }*/
 include('include/doctor-functions.php');
 $doctor = new doctor();
-$doctor->updateDoctor($docspecialization, $docname, $docaddress, $docfees, $doccontactno, $docemail);
+$sql = $doctor->updateDoctor($docspecialization, $docname, $docaddress, $docfees, $doccontactno, $docemail);
 $extra = "edit-profile.php";
 header($doctor->redirect($extra));
+if ($sql){
+	                $_SESSION['errmsg']="Datos actualizados";
+                    
+}
+
 
 }
 

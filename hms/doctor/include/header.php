@@ -32,7 +32,13 @@
 
 
 						 <?php
-					
+						
+
+					/*
+						$query = mysqli_query($conexion, "select doctorName from doctors where id='" . $_SESSION['id'] . "'");
+						while ($row = mysqli_fetch_array($query)) {
+							echo $row['doctorName'];
+						}*/
 						include('doctor-functions.php');
 						$doctor = new doctor();
 						$nombre = $doctor->getNombre();

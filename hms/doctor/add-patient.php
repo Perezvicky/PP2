@@ -15,6 +15,14 @@ $gender=$_POST['gender'];
 $pataddress=$_POST['pataddress'];
 $patage=$_POST['patage'];
 $medhis=$_POST['medhis'];
+/*$sql=mysqli_query($con,"insert into tblpatient(Docid,PatientName,PatientContno,PatientEmail,PatientGender,PatientAdd,PatientAge,PatientMedhis) values('$docid','$patname','$patcontact','$patemail','$gender','$pataddress','$patage','$medhis')");
+if($sql)
+{
+echo "<script>alert('Patient info added Successfully');</script>";
+header('location:add-patient.php');
+
+}
+}*/
 include('include/doctor-functions.php');
 $doctor = new doctor();
 $doctor->addPatient($docid, $patname, $patcontact, $patemail, $gender, $pataddress, $patage, $medhis);
@@ -152,12 +160,6 @@ Agregar
 </button>
 <br>
 <br>
-
-<?php if ($_SESSION['errmsg'] == "Paciente creado."){?><span style="color: green; font-weight: bold; font-size: 13px;"><?php echo $_SESSION['errmsg']; 
-$_SESSION['errmsg']="";} else {?><span style="color: red; font-weight: bold; font-size: 13px;"><?php echo $_SESSION['errmsg'];
-$_SESSION['errmsg']="";}?></span></span>
-
-
 
 </form>
 </div>

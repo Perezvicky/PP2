@@ -28,6 +28,9 @@ class doctor extends DB {
     protected $weight;
     protected $temp;
     protected $pres;
+	function __construct() {
+		
+	}
 
     public function comprobar($username, $password){ //checklogin de inicio de sesion
         $this->username = $username;
@@ -53,8 +56,8 @@ class doctor extends DB {
                 $status=0;
                 $extra="index.php";
                 $log = $this->doctorlog($uip, $status);
+                $_SESSION['errmsg']="Usuario o contraseña invalido"; //arreglar, no muestra el mensaje
                 header($this->redirect($extra));
-                return $_SESSION['errmsg']="Usuario o contraseña invalido"; //arreglar, no muestra el mensaje
                     }
     }
 
@@ -151,7 +154,7 @@ class doctor extends DB {
         return $sql;
     }
 
-    public function getNombre(){ //recupera el nombre del doctor
+    public function getNombre(){ //recupera todos el nombre del doctor
         $con = new DB();
 		$conexion = $con->conectar();
         $query = mysqli_query($conexion, "SELECT doctorName FROM doctors WHERE id ='".$_SESSION['id']."'");
@@ -182,8 +185,9 @@ class doctor extends DB {
         $sql = mysqli_query($conexion, $query);
         if($sql)
                 {
-                    return $_SESSION['errmsg']="Datos actualizados";
- 
+                    return "<script>alert('Doctor Details updated Successfully');</script>";
+                    $_SESSION['errmsg']="Datos actualizados";
+                    $_SESSION['errmsg']="";
                 }
     
     }
@@ -199,16 +203,8 @@ class doctor extends DB {
         $this->medhis = $medhis;
         $con = new DB();
 		$conexion = $con->conectar();
-        $sqlEmail=mysqli_query($conexion,"SELECT PatientEmail from tblpatient where PatientEmail ='$this->patemail'");
-        $num = mysqli_fetch_array($sqlEmail);
-        if($num > 0){
-            return $_SESSION['errmsg']="El email ya se encuentra registrado.";
-        
-    } else 
-    {
         $sql=mysqli_query($conexion,"INSERT INTO tblpatient(Docid,PatientName,PatientContno,PatientEmail,PatientGender,PatientAdd,PatientAge,PatientMedhis) VALUES('$this->docid','$this->patname','$this->patcontact','$this->patemail','$this->gender','$this->pataddress','$this->patage','$this->medhis')");
-        return $_SESSION['errmsg']="Paciente creado.";
-        }
+        return $sql;
     }
 
     public function getAllPatient(){ //recupera todos los pacientes y sus datos segun el id del doctor
@@ -246,11 +242,10 @@ class doctor extends DB {
         $this->sdata = $sdata;
         $con = new DB();
         $conexion = $con->conectar();
-        $sql = mysqli_query($conexion, "select * from tblpatient where PatientName like '%$this->sdata%'|| PatientContno like '%$this->sdata%' || PatientEmail like '%$this->sdata%'");
+        $sql = mysqli_query($conexion, "select * from tblpatient where PatientName like '%$this->sdata%'|| PatientContno like '%$this->sdata%'");
 	    $num = mysqli_num_rows($sql);
         return [$sql, $num];
     }
-
 
     public function getMedHistory($id){ //recupera el historial medico del paciente
         $this->id = $id;

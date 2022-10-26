@@ -2,11 +2,17 @@
 require_once('DataBase.php');
 
 class Admin extends Base{
+    //propiedades
+	public $username;
+	public $password;
+	protected static $nombre_tabla = "admin";
+	
+	//protected static $campos_tabla = array("id","username","password");
+    
 
-	protected $con;
- 
    //Método que chequea los datos del inicio de sesión en la BDD. 
    //de no ser correctos lo redirecciona a la pagina de inicio de sesión
+   //--valor devuelto, booleano--
 	public function checkloginadmin()
    {
 	if(strlen($_SESSION['login'])==0)
@@ -26,8 +32,9 @@ class Admin extends Base{
    //-- valor devuelto es un int-- busca la cantidad de usuarios registrados (No manejan el sistema interno, son pacientes)
    public function CantidadUsuarios()
    {
-		$this->con = $this->abrir_conexion();
-		$result = mysqli_query($this->con, "SELECT * FROM admin ");
+		$bd = new Base();
+		$con = $bd->abrir_conexion();
+		$result = mysqli_query($con, "SELECT * FROM admin ");
 		$num_rows = mysqli_num_rows($result);
 		return $num_rows;
    }
@@ -38,8 +45,9 @@ class Admin extends Base{
    //-- valor devuelto es un int-- busca la cantidad de doctores registrados
    public function CantidadProf()
    {
-		$this->con = $this->abrir_conexion();
-		$result1 = mysqli_query($this->con, "SELECT * FROM doctors");
+		$bd = new Base();
+		$con = $bd->abrir_conexion();
+		$result1 = mysqli_query($con, "SELECT * FROM doctors");
 		$num_rows1 = mysqli_num_rows($result1);
 		return $num_rows1;
    }
@@ -51,8 +59,9 @@ class Admin extends Base{
    //-- valor devuelto es un int-- busca la cantidad de pacientes registradas
    public function CantidadPac()
    {
-		$this->con = $this->abrir_conexion();
-		$result2 = mysqli_query($this->con, "SELECT * FROM tblpatient");
+		$bd = new Base();
+		$con = $bd->abrir_conexion();
+		$result2 = mysqli_query($con, "SELECT * FROM tblpatient");
 		$num_rows2 = mysqli_num_rows($result2);
 		return $num_rows2;
    }
@@ -63,8 +72,9 @@ class Admin extends Base{
    //-- valor devuelto es un int-- busca la cantidad de concultas nuevas realizadas
    public function CantidadCons()
    {
-		$this->con = $this->abrir_conexion();
-		$resultado3 = mysqli_query($this->con, "SELECT * FROM tblcontactus where  IsRead is null");
+		$bd = new Base();
+		$con = $bd->abrir_conexion();
+		$resultado3 = mysqli_query($con, "SELECT * FROM tblcontactus where  IsRead is null");
 		$num_rows3 = mysqli_num_rows($resultado3);
 		return $num_rows3;
    }
@@ -75,7 +85,8 @@ class Admin extends Base{
    //-- valor devuelto es un booleano-- False si no se pudo completar el insert, verdadero si fue satisfecha
    public function insertaDoc()
    {
-	$this->con = $this->abrir_conexion();
+	$bd = new Base();
+	$con = $bd -> abrir_conexion();
    	if (isset($_POST['submit'])) {
 		$docspecialization = $_POST['Doctorspecialization'];
 		$docname = $_POST['docname'];
@@ -84,7 +95,7 @@ class Admin extends Base{
 		$doccontactno = $_POST['doccontact'];
 		$docemail = $_POST['docemail'];
 		$password = md5($_POST['npass']);
-		$sql = mysqli_query($this->con, "insert into doctors(specilization,doctorName,address,docFees,contactno,docEmail,password) values('$docspecialization','$docname','$docaddress','$docfees','$doccontactno','$docemail','$password')");
+		$sql = mysqli_query($con, "insert into doctors(specilization,doctorName,address,docFees,contactno,docEmail,password) values('$docspecialization','$docname','$docaddress','$docfees','$doccontactno','$docemail','$password')");
 		return $sql;
 		}
 	}
@@ -93,8 +104,9 @@ class Admin extends Base{
 	//--valor devuelto es un booleano-- 
 	public function consultadocesp()
 	{
-		$this->con = $this->abrir_conexion();
-		$ret = mysqli_query($this->con, "select * from doctorspecilization");
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();
+		$ret = mysqli_query($con, "select * from doctorspecilization");
 		return $ret;
 	}
 
@@ -105,10 +117,11 @@ class Admin extends Base{
 	//--valor devuelto es un array asociativo que contiene variables de sesión disponibles-- 
 	public function borrarDoc()
 	{
-		$this->con = $this->abrir_conexion();
 		if(isset($_GET['del']))
 		  {
-		        mysqli_query($this->con,"delete from doctors where id = '".$_GET['id']."'");
+				$bd = new Base();
+				$con = $bd -> abrir_conexion();
+		        mysqli_query($con,"delete from doctors where id = '".$_GET['id']."'");
                 return $_SESSION['msg']="datos borrados";
 		  }
 	}
@@ -117,8 +130,9 @@ class Admin extends Base{
 	//--valor devuelto es un booleano--
 	public function BuscaDOC()
 	{
-		$this->con = $this->abrir_conexion();
-		$sql=mysqli_query($this->con,"select * from doctors");
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();
+		$sql=mysqli_query($con,"select * from doctors");
 		return $sql;
 	}
 
@@ -130,17 +144,19 @@ class Admin extends Base{
 	{
 		if(isset($_GET['del']))
 		  {
-				$this->con = $this->abrir_conexion();
-		        mysqli_query($this->con,"delete from doctorSpecilization where id = '".$_GET['id']."'");
+				$bd = new Base();
+				$con = $bd -> abrir_conexion();
+		        mysqli_query($con,"delete from doctorSpecilization where id = '".$_GET['id']."'");
                 return $_SESSION['msg']="datos borrados";
 		  }
 	}
 
 	public function InsertaEsp()
 	{
-		$this->con = $this->abrir_conexion();	
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
 		if (isset($_POST['submit'])) {
-			$sql = mysqli_query($this->con, "insert into doctorSpecilization(specilization) values('" . $_POST['doctorspecilization'] . "')");
+			$sql = mysqli_query($con, "insert into doctorSpecilization(specilization) values('" . $_POST['doctorspecilization'] . "')");
 			return $sql;
 		}
 	}
@@ -149,8 +165,9 @@ class Admin extends Base{
 	//--valor devuelto es un booleano--
 	public function BuscarEsp()
 	{
-		$this->con = $this->abrir_conexion();	
-		$sql = mysqli_query($this->con, "select * from doctorSpecilization");
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
+		$sql = mysqli_query($con, "select * from doctorSpecilization");
 		return $sql;
 	}
 
@@ -159,8 +176,9 @@ class Admin extends Base{
 
 	public function BuscarPac()
 	{
-		$this->con = $this->abrir_conexion();
-		$sql =  mysqli_query($this->con, "select * from tblpatient");
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
+		$sql =  mysqli_query($con, "select * from tblpatient");
 		return $sql;
 	}
 
@@ -170,10 +188,11 @@ class Admin extends Base{
 	//--valor devuelto es un array asociativo que contiene variables de sesión disponibles-- 
 	public function BorrarUsuario()
 	{
-		$this->con = $this->abrir_conexion();	
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
 		if(isset($_GET['del']))
 		  {
-		          mysqli_query($this->con,"delete from admin where id = '".$_GET['id']."'");
+		          mysqli_query($con,"delete from admin where id = '".$_GET['id']."'");
                   return $_SESSION['msg']="datos borrados";
 		  }
 	}
@@ -183,8 +202,9 @@ class Admin extends Base{
 
 	public function BuscarAdmin()
 	{
-		$this->con = $this->abrir_conexion();	
-		$sql = mysqli_query($this->con,"select * from admin");
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
+		$sql = mysqli_query($con,"select * from admin");
 		return $sql;
 	}
 
@@ -193,8 +213,9 @@ class Admin extends Base{
 
 	public function BuscarCitas()
 	{
-		$this->con = $this->abrir_conexion();	
-		$sql = mysqli_query($this->con, "select doctors.doctorName as docname,appointment.*  from appointment join doctors on doctors.id=appointment.doctorId");
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
+		$sql = mysqli_query($con, "select doctors.doctorName as docname,appointment.*  from appointment join doctors on doctors.id=appointment.doctorId");
 		return $sql;
 	}
 
@@ -205,10 +226,11 @@ class Admin extends Base{
 
 	public function BorrarConsulta()
 	{
-		$this->con = $this->abrir_conexion();	
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
 		if(isset($_GET['del']))
 		  {
-		        mysqli_query($this->con,"delete from doctors where id = '".$_GET['id']."'");
+		        mysqli_query($con,"delete from doctors where id = '".$_GET['id']."'");
                 return $_SESSION['msg']="datos borrados";
 		  }
 	}
@@ -218,8 +240,9 @@ class Admin extends Base{
 
 	public function BuscarNOleidas()
 	{
-		$this->con = $this->abrir_conexion();	
-		$sql = mysqli_query($this->con,"select * from tblcontactus where IsRead is NULL");
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
+		$sql = mysqli_query($con,"select * from tblcontactus where IsRead is NULL");
 		return $sql;
 	}
 
@@ -230,10 +253,11 @@ class Admin extends Base{
 
 	public function BorrarLeida()
 	{
-		$this->con = $this->abrir_conexion();	
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
 		if(isset($_GET['del']))
 		  {
-		          mysqli_query($this->con,"delete from doctors where id = '".$_GET['id']."'");
+		          mysqli_query($con,"delete from doctors where id = '".$_GET['id']."'");
                   $_SESSION['msg']="datos borrados";
 		  }
 	}
@@ -241,8 +265,9 @@ class Admin extends Base{
 	//--valor devuelto es un booleano--
 	public function Leida()
 	{
-		$this->con = $this->abrir_conexion();	
-		$sql= mysqli_query($this->con,"select * from tblcontactus where IsRead is not null");
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
+		$sql= mysqli_query($con,"select * from tblcontactus where IsRead is not null");
 		return $sql;
 	}
 
@@ -250,8 +275,9 @@ class Admin extends Base{
 	//--valor devuelto es un booleano--
 	public function LoginDoc()
 	{
-		$this->con = $this->abrir_conexion();	
-		$sql= mysqli_query($this->con,"select * from doctorslog ");
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
+		$sql= mysqli_query($con,"select * from doctorslog ");
 		return $sql;
 	}
 
@@ -259,8 +285,9 @@ class Admin extends Base{
 	//--valor devuelto es un booleano--
 	public function LoginUser()
 	{
-		$this->con = $this->abrir_conexion();	
-		$sql= mysqli_query($this->con,"select * from userlog ");
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
+		$sql= mysqli_query($con,"select * from userlog ");
 		return $sql;
 	}
 
@@ -268,9 +295,10 @@ class Admin extends Base{
 	//--valor devuelto es un booleano--
 	public function BuscaPaciente($Datos)
 	{
-		$this->con = $this->abrir_conexion();;	
+		$bd = new Base();
+		$con = $bd -> abrir_conexion();	
 		$sdata= $Datos;
-		$sql=  mysqli_query($this->con, "select * from tblpatient where PatientName like '%$sdata%'|| PatientContno like '%$sdata%'");
+		$sql=  mysqli_query($con, "select * from tblpatient where PatientName like '%$sdata%'|| PatientContno like '%$sdata%'");
 		return $sql;
 	}
 }

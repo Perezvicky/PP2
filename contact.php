@@ -1,16 +1,10 @@
 <?php
-include_once('hms/include/config.php');
+require('clases/Contacto.php');
 if (isset($_POST['submit'])) {
-	$name = $_POST['fullname'];
-	$email = $_POST['emailid'];
-	$mobileno = $_POST['mobileno'];
-	$dscrption = $_POST['description'];
-	$query = mysqli_query($con, "insert into tblcontactus(fullname,email,contactno,message) value('$name','$email','$mobileno','$dscrption')");
+	Contact::insertar();
 	echo "<script>alert('Your information succesfully submitted');</script>";
 	echo "<script>window.location.href ='contact.php'</script>";
 }
-
-
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -66,19 +60,19 @@ if (isset($_POST['submit'])) {
 						<form name="contactus" method="post">
 							<div>
 								<span><label>Nombre</label></span>
-								<span><input type="text" name="fullname" required="true" value=""></span>
+								<span><input type="text" name="nombre_contact" required="true" value=""></span>
 							</div>
 							<div>
 								<span><label>E-MAIL</label></span>
-								<span><input type="email" name="emailid" required="ture" value=""></span>
+								<span><input type="email" name="mail_contacto" required="ture" value=""></span>
 							</div>
 							<div>
 								<span><label>Telefono</label></span>
-								<span><input type="text" name="mobileno" required="true" value=""></span>
+								<span><input type="text" name="tel_contact" required="true" value=""></span>
 							</div>
 							<div>
 								<span><label>Descripción</label></span>
-								<span><textarea name="description" required="true"> </textarea></span>
+								<span><textarea name="descripcion" required="true"> </textarea></span>
 							</div>
 							<div>
 								<span><input type="submit" name="submit" value="Enviar"></span>
