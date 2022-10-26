@@ -3,6 +3,7 @@ require_once('DataBase.php');
 
 class Admin extends Base{
     //propiedades
+	public $id;
 	public $username;
 	public $password;
 	protected static $nombre_tabla = "admin";
