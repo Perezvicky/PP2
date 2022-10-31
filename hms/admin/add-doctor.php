@@ -9,7 +9,7 @@ $ad = new Admin();
 $ad->checkloginadmin();
 $sql = $ad->insertaDoc();
 if ($sql) {
-	echo "<script>alert('Doctor info added Successfully');</script>";
+	echo "<script>alert('Información del doctor agregada con éxito');</script>";
 	echo "<script>window.location.href ='manage-doctors.php'</script>";
 			} 
 ?>
