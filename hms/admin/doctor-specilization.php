@@ -8,7 +8,7 @@ $ad = new Admin();
 $ad->checkloginadmin();
 $sql = $ad->InsertaEsp();
 if ($sql) {
-	$_SESSION['msg'] = "Especializaciones added successfully !!";
+	$_SESSION['msg'] = "Especializacion agregada con éxito!!";
 			} 
 $ad->borrarEsp();
 ?>
