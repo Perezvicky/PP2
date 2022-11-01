@@ -3,8 +3,6 @@ session_start();
 error_reporting(0);
 
 
-/*include('include/checklogin.php');
-check_login();*/
 
 
 

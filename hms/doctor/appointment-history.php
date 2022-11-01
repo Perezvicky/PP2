@@ -1,12 +1,11 @@
-<?php /*  ------ NO TRAE ABSOLUTAMENTE NADA DE LA BD, AUN EN EL LA PAGINA ORIGINAL SIN POO ------  */
+<?php
 session_start();
 error_reporting(0);
-//include('include/checklogin.php');
-//check_login(); NO FUNCIONA SI AGREGO check_login();=
+
 
 if(isset($_GET['cancel']))
 		  {
-//mysqli_query($conexion,"update appointment set doctorStatus='0' where id ='".$_GET['id']."'");
+
 $id = $_GET['id'];
 include_once('include/doctor-functions.php');
 $doctor = new doctor();
@@ -88,7 +87,6 @@ $_SESSION['msg']="Cita cancelada";
 										</thead>
 										<tbody>
 <?php
-//$sql=mysqli_query($con,"select users.fullName as fname,appointment.*  from appointment join users on users.id=appointment.userId where appointment.doctorId='".$_SESSION['id']."'");
 
 $sql = $doctor->getAppointment();
 $cnt=1;

@@ -1,8 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-//include('include/checklogin.php');
-//check_login();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,8 +88,7 @@ error_reporting(0);
 											<?php
 											$doctor = new doctor();
 											list($sql, $num) = $doctor->getPatientbyName($sdata);
-											//$sql = mysqli_query($con, "select * from tblpatient where PatientName like '%$sdata%'|| PatientContno like '%$sdata%'");
-											//$num = mysqli_num_rows($sql);
+											
 											if ($num > 0) {
 												$cnt = 1;
 												while ($row = mysqli_fetch_array($sql)) {

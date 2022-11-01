@@ -2,8 +2,6 @@
 session_start();
 error_reporting(0);
 
-//include('include/checklogin.php');
-//check_login();
 if(isset($_POST['submit']))
   {
     
@@ -15,15 +13,7 @@ if(isset($_POST['submit']))
     $pres=$_POST['pres'];
    
     include('include/doctor-functions.php');
-    /*$query.=mysqli_query($con, "insert   tblmedicalhistory(PatientID,BloodPressure,BloodSugar,Peso,Temperature,MedicalPres)value('$vid','$bp','$bs','$weight','$temp','$pres')");
-    if ($query) {
-    echo '<script>alert("Medicle history has been added.")</script>';
-    echo "<script>window.location.href ='manage-patient.php'</script>";
-  }
-  else
-    {
-      echo '<script>alert("Something Went Wrong. Please try again")</script>';
-    }*/
+   
     $doctor = new doctor();
     $sql = $doctor->addMedHistory($vid, $bp, $weight, $temp, $pres);
     $extra = "manage-patient.php";

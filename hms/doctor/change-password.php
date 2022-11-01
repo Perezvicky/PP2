@@ -1,14 +1,12 @@
 <?php
 session_start();
 error_reporting(0);
-//include('include/config.php');
-//include('include/checklogin.php');
-//check_login();
-date_default_timezone_set('America/Argentina/Buenos_Aires');// change according timezone
+
+date_default_timezone_set('America/Argentina/Buenos_Aires');// Cambia de acuerdo a la zona horaria
 $currentTime = date( 'd-m-Y h:i:s A', time () );
 if(isset($_POST['submit']))
 {
-//$sql=mysqli_query($con,"SELECT password FROM  doctors where password='".md5($_POST['cpass'])."' && id='".$_SESSION['id']."'");
+
 include ('include/doctor-functions.php');
 $password = $_POST['cpass'];
 $doctor = new doctor();
@@ -16,23 +14,6 @@ $sql = $doctor->getPassword($password);
 $newpassword = $_POST['npass'];
 $doctor->updatePassword($newpassword, $currentTime);
 
-/*if($num>0)
-{
-	$newpassword = $_POST['npass'];
-	$doctor = new doctor();
-	$sql = $doctor->updatePassword($newpassword, $currentTime);
-	$extra = "change-password.php";
-    header($doctor->redirect($extra));
- //$con=mysqli_query($con,"update doctors set password='".md5($_POST['npass'])."', updationDate='$currentTime' where id='".$_SESSION['id']."'");
-$_SESSION['msg1']="Contraseña modificada.";
-}
-else
-{
-	$extra = "change-password.php";
-    header($doctor->redirect($extra));
-
-$_SESSION['msg1']="La contraseña antigua no es valida.";
-}*/
 }
 
 

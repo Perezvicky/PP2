@@ -1,8 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-//include('include/checklogin.php');
-//check_login();
+
 
 if(isset($_POST['submit']))
 {	
@@ -15,11 +14,7 @@ $pataddress=$_POST['pataddress'];
 $patage=$_POST['patage'];
 $medhis=$_POST['medhis'];
 
-/*if($sql)
-{
-echo "<script>alert('Patient info updated Successfully');</script>";
-header('location:manage-patient.php');
-}*/
+
 include('include/doctor-functions.php');
 $doctor = new Doctor();
 $sql = $doctor->editPatient($eid, $patname, $patcontact, $patemail, $gender, $pataddress, $patage, $medhis, $doctor);
@@ -91,7 +86,7 @@ $eid=$_GET['editid'];
 $doctor = new doctor();
 $ret = $doctor->getPatient($eid);
 
-//$ret=mysqli_query($con,"select * from tblpatient where ID='$eid'");
+
 
 while ($row=mysqli_fetch_array($ret)) {
 

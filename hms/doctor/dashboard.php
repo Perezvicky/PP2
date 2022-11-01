@@ -1,8 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-//include('include/checklogin.php');
-//check_login();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -2,8 +2,6 @@
 session_start();
 error_reporting(0);
 
-//include('include/checklogin.php');
-//check_login();
 if(isset($_POST['submit']))
   {
     
@@ -15,15 +13,7 @@ if(isset($_POST['submit']))
     $pres=$_POST['pres'];
    
     
-    /*$query.=mysqli_query($con, "insert   tblmedicalhistory(PatientID,BloodPressure,BloodSugar,Peso,Temperature,MedicalPres)value('$vid','$bp','$bs','$weight','$temp','$pres')");
-    if ($query) {
-    echo '<script>alert("Medicle history has been added.")</script>';
-    echo "<script>window.location.href ='manage-patient.php'</script>";
-  }
-  else
-    {
-      echo '<script>alert("Something Went Wrong. Please try again")</script>';
-    }*/
+    
     include('include/doctor-functions.php');
     $doctor = new doctor();
     $doctor->addMedHistory($vid, $bp, $weight, $temp, $pres);
@@ -82,7 +72,7 @@ if(isset($_POST['submit']))
 <?php
 $vid=$_GET['viewid'];
 $ret = $doctor->getPatient($vid);
-//$ret=mysqli_query($con,"select * from tblpatient where ID='$vid'");
+
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
                                ?>
@@ -121,7 +111,7 @@ while ($row=mysqli_fetch_array($ret)) {
 </table>
 <?php  
 
-//$ret=mysqli_query($con,"select * from tblmedicalhistory  where PatientID='$vid'");
+
 
 $ret = $doctor->getMedHistory($vid)
 

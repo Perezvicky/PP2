@@ -1,9 +1,6 @@
 <?php
 session_start();
 error_reporting(0);
-//include('include/config.php');
-//include('include/checklogin.php');
-//check_login();
 
 if(isset($_POST['submit']))
 {	
@@ -15,14 +12,7 @@ $gender=$_POST['gender'];
 $pataddress=$_POST['pataddress'];
 $patage=$_POST['patage'];
 $medhis=$_POST['medhis'];
-/*$sql=mysqli_query($con,"insert into tblpatient(Docid,PatientName,PatientContno,PatientEmail,PatientGender,PatientAdd,PatientAge,PatientMedhis) values('$docid','$patname','$patcontact','$patemail','$gender','$pataddress','$patage','$medhis')");
-if($sql)
-{
-echo "<script>alert('Patient info added Successfully');</script>";
-header('location:add-patient.php');
 
-}
-}*/
 include('include/doctor-functions.php');
 $doctor = new doctor();
 $doctor->addPatient($docid, $patname, $patcontact, $patemail, $gender, $pataddress, $patage, $medhis);

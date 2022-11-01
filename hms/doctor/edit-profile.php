@@ -1,8 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-//
-//include('include/checklogin.php');
+
 if(isset($_POST['submit']))
 {
 	$docspecialization=$_POST['Doctorspecialization'];
@@ -11,12 +10,7 @@ $docaddress=$_POST['clinicaddress'];
 $docfees=$_POST['docfees'];
 $doccontactno=$_POST['doccontact'];
 $docemail=$_POST['docemail'];
-//$sql=mysqli_query($con,"Update doctors set specilization='$docspecialization',doctorName='$docname',address='$docaddress',docFees='$docfees',contactno='$doccontactno' where id='".$_SESSION['id']."'");
-/*if($sql)
-{
-echo "<script>alert('Doctor Details updated Successfully');</script>";
 
-}*/
 include('include/doctor-functions.php');
 $doctor = new doctor();
 $sql = $doctor->updateDoctor($docspecialization, $docname, $docaddress, $docfees, $doccontactno, $docemail);
@@ -91,7 +85,7 @@ if ($sql){
 												<div class="panel-body">
 													
 									<?php
-									//$sql=mysqli_query($conexion,"select * from doctors where docEmail='".$_SESSION['login']."'");
+
 									$doctor = new doctor();
 									$sql = $doctor->getAll();
 									while($data=mysqli_fetch_array($sql))
@@ -127,7 +121,7 @@ if ($sql){
 					<?php 
 					$doctor = new doctor();
 					$ret = $doctor->getDoctorspecilization();
-					//$ret=mysqli_query($conexion,"select * from doctorspecilization");
+
 					while($row=mysqli_fetch_array($ret))
 					{
 						?>

@@ -2,11 +2,11 @@
 session_start();
 error_reporting(0);
 
-//Checking Details for reset password
+
 if(isset($_POST['submit'])){
 $contactno=$_POST['contactno'];
 $email=$_POST['email'];
-//$query=mysqli_query($con,"select id from  doctors where contactno='$contactno' and docEmail='$email'");
+
 include('include/doctor-functions.php');
 $doctor = new doctor();
 $doctor->forgotPasword($contactno, $email);
