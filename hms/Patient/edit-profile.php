@@ -12,7 +12,7 @@ if (isset($_POST['submit'])) {
 
 	$sql = mysqli_query($con, "Update users set fullName='$fname',address='$address',city='$city',gender='$gender' where id='" . $_SESSION['id'] . "'");
 	if ($sql) {
-		$msg = "Your Profile updated Successfully";
+		$msg = "Tu perfil fue actualizado con éxito";
 	}
 }
 ?>
@@ -124,7 +124,7 @@ if (isset($_POST['submit'])) {
 
 															<select name="gender" class="form-control" required="required">
 																<option value="<?php echo htmlentities($data['gender']); ?>"><?php echo htmlentities($data['gender']); ?></option>
-																<option value="male">Masculino</option>
+																<option value="Masculino">Masculino</option>
 																<option value="female">Femenino</option>
 																<option value="other">Otro</option>
 															</select>
